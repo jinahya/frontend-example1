@@ -23,16 +23,20 @@ var paths = {
     images: ['src/images']
 };
 
+// deletes dst/ and dpl/
 gulp.task('clean', function () {
     return del([paths.dst + '/**', paths.dpl + '/**']);
 });
 
+// processes javascripts, coffeescripts, and typescripts
+// produces dst/scripts/script.js
 gulp.task('scripts', function () {
     return mergestream(
-            (gulp.src(paths.javascripts)).pipe(jshint()),
-            (gulp.src(paths.coffeescripts)
+            (gulp.src(paths.javascripts) // javascripts
+                    .pipe(jshint())),
+            (gulp.src(paths.coffeescripts) // coffeescripts
                     .pipe(coffee({bare: true}).on('error', util.log))),
-            (gulp.src(paths.typescripts)
+            (gulp.src(paths.typescripts) // typescripts
                     .pipe(typescript())))
             .pipe(uglify())
             .pipe(concat('script.js'))
@@ -41,8 +45,8 @@ gulp.task('scripts', function () {
 
 gulp.task('styles', function () {
     return mergestream(
-            (gulp.src('src/styles/**/*.css')),
-            (gulp.src('src/styles/**/*.scss')
+            (gulp.src('src/styles/**/*.css')), // css
+            (gulp.src('src/styles/**/*.scss') // scss
                     .pipe(sass().on('error', sass.logError))))
             //.pipe(uglify())
             //.pipe(concat('script.js'))
