@@ -2,12 +2,14 @@
 
 var del = require('del');
 var imageminpngquant = require('imagemin-pngquant');
+var mainbowerfiles = require('main-bower-files');
 var mergestream = require('merge-stream');
 
 var gulp = require('gulp');
 var gulpcleancss = require('gulp-clean-css');
 var gulpcoffee = require('gulp-coffee');
 var gulpconcat = require('gulp-concat');
+var gulpdebug = require('gulp-debug');
 var gulphtmlmin = require('gulp-htmlmin');
 var gulpimagemin = require('gulp-imagemin');
 var gulpjshint = require('gulp-jshint');
@@ -79,8 +81,16 @@ gulp.task('styles', function () {
             .pipe(gulp.dest(paths.dst + '/styles'));
 });
 
+gulp.task("mainbowerfiles", function () {
+    //return gulp.src(mainbowerfiles(), {base: './bower_components'})
+    //        .pipe(gulp.dest(paths.dst + '/mainbowerfiles/'));
+    return gulp.src(mainbowerfiles())
+            .pipe(gulpdebug())
+            .pipe(gulp.dest(paths.dst + '/mainbowerfiles/'));
+});
+
 // archives
-gulp.task('archive', ['markups', 'images', 'scripts', 'styles'], function () {
+gulp.task('archive', ['markups', 'images', 'scripts', 'styles', 'mainbowerfiles'], function () {
     return gulp.src('**/*', {cwd: paths.dst, cwdbase: true})
             .pipe(gulpzip('archive.zip'))
             .pipe(gulp.dest(paths.dpl));
