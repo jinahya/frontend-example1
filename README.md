@@ -16,16 +16,9 @@ A sample project using [node](https://www.npmjs.com/), [gulp](http://gulpjs.com/
 ```
 
 ## build
-### bower
 ```
 $ bower install
-```
-### node
-```
 $ npm install
-```
-### gulp
-```
 $ gulp
 ```
 ## gulp
