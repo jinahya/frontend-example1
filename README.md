@@ -18,18 +18,18 @@ A sample project using [node](https://www.npmjs.com/), [gulp](http://gulpjs.com/
 ## build
 ### bower
 ```
-$ bower installer
+$ bower install
 ```
 ### node
 ```
-$ npm insall
+$ npm install
 ```
 ### gulp
 ```
 $ gulp
 ```
-
-#### clean
+## gulp
+### clean
 * [`gulp-clean`](https://www.npmjs.com/package/gulp-clean) deprepated by `gulp-rmiraf`.
 * [`gulp-rmiraf`](https://www.npmjs.com/package/gulp-rimraf) deprecated in favor of [`delete-files-folder`](https://github.com/gulpjs/gulp/blob/master/docs/recipes/delete-files-folder.md).
 
@@ -40,7 +40,7 @@ gulp.task('clean', function () {
     return del.sync([paths.dst + '/**', paths.dpl + '/**']);
 });
 ```
-#### markups
+### markups
 ```
 // processes markup files
 gulp.task('markups', function () {
@@ -49,7 +49,7 @@ gulp.task('markups', function () {
             .pipe(gulp.dest(paths.dst));
 });
 ```
-#### images
+### images
 ```javascript
 // processes image files
 gulp.task('images', function () {
@@ -62,7 +62,7 @@ gulp.task('images', function () {
             .pipe(gulp.dest(paths.dst + '/images'));
 });
 ```
-#### scripts
+### scripts
 The `scripts` task processes three types of scripts(javascripts, coffeescripts, and typescripts).
 ```javascript
 // processes javascripts, coffeescripts, and typescripts
@@ -80,7 +80,7 @@ gulp.task('scripts', function () {
             .pipe(gulp.dest(paths.dst + '/scripts'));
 });
 ```
-#### styles
+### styles
 ```javascript
 // processes style files
 // processes style files
@@ -96,7 +96,7 @@ gulp.task('styles', function () {
             .pipe(gulp.dest(paths.dst + '/styles'));
 });
 ```
-#### archives
+### archives
 ```javascript
 // archives
 gulp.task('archive', ['markups', 'images', 'scripts', 'styles'], function () {
