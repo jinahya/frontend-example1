@@ -7,6 +7,7 @@ var mergestream = require('merge-stream');
 var gulp = require('gulp');
 var gulpcoffee = require('gulp-coffee');
 var gulpconcat = require('gulp-concat');
+var gulphtmlmin = require('gulp-htmlmin');
 var gulpimagemin = require('gulp-imagemin');
 var gulpjshint = require('gulp-jshint');
 var gulpsass = require('gulp-sass');
@@ -34,6 +35,7 @@ gulp.task('clean', function () {
 // processes markup files
 gulp.task('markups', function () {
     return gulp.src(paths.markups)
+            .pipe(gulphtmlmin({collapseWhitespace: true}))
             .pipe(gulp.dest(paths.dst));
 });
 

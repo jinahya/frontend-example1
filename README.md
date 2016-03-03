@@ -23,7 +23,7 @@ This project creates two directories while building. One is `dst/` for processed
 ```javascript
 // deletes dst/ and dpl/
 gulp.task('clean', function () {
-    return del([paths.dst + '/**', paths.dpl + '/**']);
+    return del.sync([paths.dst + '/**', paths.dpl + '/**']);
 });
 ```
 
