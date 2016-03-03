@@ -37,6 +37,20 @@ gulp.task('markups', function () {
 });
 ```
 
+## images
+```javascript
+// processes image files
+gulp.task('images', function () {
+    return gulp.src(paths.images)
+            .pipe(gulpimagemin({
+                progressive: true,
+                svgoPlugins: [{removeViewBox: false}],
+                use: [imageminpngquant()]
+            }))
+            .pipe(gulp.dest(paths.dst + '/images'));
+});
+```
+
 ## scripts
 The `scripts` task processes three types of scripts(javascripts, coffeescripts, and typescripts).
 ```javascript
@@ -44,27 +58,38 @@ The `scripts` task processes three types of scripts(javascripts, coffeescripts, 
 // produces dst/scripts/script.js
 gulp.task('scripts', function () {
     return mergestream(
-            (gulp.src(paths.javascripts)
-                    .pipe(jshint())),
-            (gulp.src(paths.coffeescripts)
-                    .pipe(coffee({bare: true}).on('error', util.log))),
-            (gulp.src(paths.typescripts)
-                    .pipe(typescript())))
-            .pipe(uglify())
-            .pipe(concat('script.js'))
+            (gulp.src(paths.javascripts) // javascripts
+                    .pipe(gulpjshint())),
+            (gulp.src(paths.coffeescripts) // coffeescripts
+                    .pipe(gulpcoffee({bare: true}).on('error', gulputil.log))),
+            (gulp.src(paths.typescripts) // typescripts
+                    .pipe(gulptypescript())))
+            .pipe(gulpuglify())
+            //.pipe(gulpconcat('script.js'))
             .pipe(gulp.dest(paths.dst + '/scripts'));
 });
 ```
 
 ## styles
 ```javascript
+// processes style files
 gulp.task('styles', function () {
     return mergestream(
-            (gulp.src('src/styles/**/*.css')),
-            (gulp.src('src/styles/**/*.scss')
-                    .pipe(sass().on('error', sass.logError))))
+            (gulp.src('src/styles/**/*.css')), // css
+            (gulp.src('src/styles/**/*.scss') // scss
+                    .pipe(gulpsass().on('error', gulpsass.logError))))
             //.pipe(uglify())
             //.pipe(concat('script.js'))
             .pipe(gulp.dest(paths.dst + '/styles'));
+});
+```
+
+## archives
+```javascript
+// archives
+gulp.task('archive', ['markups', 'images', 'scripts', 'styles'], function () {
+    return gulp.src('**/*', {cwd: paths.dst, cwdbase: true})
+            .pipe(gulpzip('archive.zip'))
+            .pipe(gulp.dest(paths.dpl));
 });
 ```
