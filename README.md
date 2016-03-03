@@ -27,6 +27,16 @@ gulp.task('clean', function () {
 });
 ```
 
+## markups
+```
+// processes markup files
+gulp.task('markups', function () {
+    return gulp.src(paths.markups)
+            .pipe(gulphtmlmin({collapseWhitespace: true}))
+            .pipe(gulp.dest(paths.dst));
+});
+```
+
 ## scripts
 The `scripts` task processes three types of scripts(javascripts, coffeescripts, and typescripts).
 ```javascript
