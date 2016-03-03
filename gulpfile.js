@@ -82,11 +82,9 @@ gulp.task('styles', function () {
 });
 
 gulp.task("mainbowerfiles", function () {
-    //return gulp.src(mainbowerfiles(), {base: './bower_components'})
-    //        .pipe(gulp.dest(paths.dst + '/mainbowerfiles/'));
     return gulp.src(mainbowerfiles())
             .pipe(gulpdebug())
-            .pipe(gulp.dest(paths.dst + '/mainbowerfiles/'));
+            .pipe(gulp.dest(paths.dst + '/components/'));
 });
 
 // archives
