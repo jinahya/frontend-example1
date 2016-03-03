@@ -5,6 +5,7 @@ var imageminpngquant = require('imagemin-pngquant');
 var mergestream = require('merge-stream');
 
 var gulp = require('gulp');
+var gulpcleancss = require('gulp-clean-css');
 var gulpcoffee = require('gulp-coffee');
 var gulpconcat = require('gulp-concat');
 var gulphtmlmin = require('gulp-htmlmin');
@@ -71,8 +72,10 @@ gulp.task('styles', function () {
             (gulp.src('src/styles/**/*.css')), // css
             (gulp.src('src/styles/**/*.scss') // scss
                     .pipe(gulpsass().on('error', gulpsass.logError))))
-            //.pipe(uglify())
-            //.pipe(concat('script.js'))
+            .pipe(gulpcleancss({debug: true}, function (details) {
+                console.log(details.name + ': ' + details.stats.originalSize);
+                console.log(details.name + ': ' + details.stats.minifiedSize);
+            }))
             .pipe(gulp.dest(paths.dst + '/styles'));
 });
 

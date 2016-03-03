@@ -73,13 +73,16 @@ gulp.task('scripts', function () {
 ## styles
 ```javascript
 // processes style files
+// processes style files
 gulp.task('styles', function () {
     return mergestream(
             (gulp.src('src/styles/**/*.css')), // css
             (gulp.src('src/styles/**/*.scss') // scss
                     .pipe(gulpsass().on('error', gulpsass.logError))))
-            //.pipe(uglify())
-            //.pipe(concat('script.js'))
+            .pipe(gulpcleancss({debug: true}, function (details) {
+                console.log(details.name + ': ' + details.stats.originalSize);
+                console.log(details.name + ': ' + details.stats.minifiedSize);
+            }))
             .pipe(gulp.dest(paths.dst + '/styles'));
 });
 ```
