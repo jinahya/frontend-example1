@@ -21,30 +21,35 @@ var gulpzip = require('gulp-zip');
 
 var paths = {
     src: 'src',
+    src_markups: ['src/**/*.html'],
+    src_images: ['src/images/**/*'],
+    src_javascripts: ['src/scripts/**/*.js'],
+    src_coffeescripts: ['src/scripts/**/*.coffee'],
+    src_typescripts: ['src/scripts/**/*.ts'],
     dst: 'dst',
-    dpl: 'dpl',
-    markups: ['src/**/*.html'],
-    javascripts: ['src/scripts/**/*.js'],
-    coffeescripts: ['src/scripts/**/*.coffee'],
-    typescripts: ['src/scripts/**/*.ts'],
-    images: ['src/images/**/*']
+    dpl: 'dpl'
 };
 
-// deletes dst/ and dpl/
+var environment = process.env.NODE_ENV
+        || (gulputil.env.environment || 'production');
+gulputil.log('environment: ' + environment);
+
+
+// deletes dest/ and depl/
 gulp.task('clean', function () {
     return del.sync([paths.dst + '/**', paths.dpl + '/**']);
 });
 
 // processes markup files
 gulp.task('markups', function () {
-    return gulp.src(paths.markups)
+    return gulp.src(paths.src_markups)
             .pipe(gulphtmlmin({collapseWhitespace: true}))
             .pipe(gulp.dest(paths.dst));
 });
 
 // processes image files
 gulp.task('images', function () {
-    return gulp.src(paths.images)
+    return gulp.src(paths.src_images)
             .pipe(gulpimagemin({
                 progressive: true,
                 svgoPlugins: [{removeViewBox: false}],
@@ -57,11 +62,11 @@ gulp.task('images', function () {
 // produces dst/scripts/script.js
 gulp.task('scripts', function () {
     return mergestream(
-            (gulp.src(paths.javascripts) // javascripts
+            (gulp.src(paths.src_javascripts) // javascripts
                     .pipe(gulpjshint())),
-            (gulp.src(paths.coffeescripts) // coffeescripts
+            (gulp.src(paths.src_coffeescripts) // coffeescripts
                     .pipe(gulpcoffee({bare: true}).on('error', gulputil.log))),
-            (gulp.src(paths.typescripts) // typescripts
+            (gulp.src(paths.src_typescripts) // typescripts
                     .pipe(gulptypescript())))
             .pipe(gulpuglify())
             //.pipe(gulpconcat('script.js'))
@@ -81,23 +86,34 @@ gulp.task('styles', function () {
             .pipe(gulp.dest(paths.dst + '/styles'));
 });
 
+// copies ./src/config/<environment>.json to ./dst/config/config.json
+gulp.task('node-config', function () {
+    return gulp.src([paths.src + '/config/' + environment + '.json'])
+            .pipe(gulpdebug({title: 'node-config'}))
+            .pipe(gulp.dest(paths.dst + "/config/config.json"));
+});
+
 gulp.task("mainbowerfiles", function () {
     return gulp.src(mainbowerfiles())
             .pipe(gulpdebug())
-            .pipe(gulp.dest(paths.dst + '/components/'));
+            .pipe(gulp.dest(paths.dst + '/externals/'));
 });
 
 // archives
-gulp.task('archive', ['markups', 'images', 'scripts', 'styles', 'mainbowerfiles'], function () {
+gulp.task('archive', ['markups', 'images', 'scripts', 'styles', 'mainbowerfiles', 'node-config'], function () {
     return gulp.src('**/*', {cwd: paths.dst, cwdbase: true})
             .pipe(gulpzip('archive.zip'))
             .pipe(gulp.dest(paths.dpl));
 });
 
 gulp.task('default', ['archive'], function () {
-
 });
 
 gulp.task('build', ['default'], function () {
 
+});
+
+gulp.task('build-development', ['default'], function () {
+    process.env.NODE_ENV = "stage";
+    var config = require('config');
 });

@@ -1,0 +1,8 @@
+{
+    "server1": {
+        "scheme": "http://",
+        "host": "www.host_default.com",
+        "port": 80,
+        "path": "/path_default"
+    }
+}
