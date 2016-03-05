@@ -37,6 +37,5 @@
     "uglify-js": "^2.6.2"
   },
   "dependencies": {
-    "node-config": "0.0.2"
   }
 }

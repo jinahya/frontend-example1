@@ -33,7 +33,7 @@ var paths = {
 var environment = process.env.NODE_ENV
         || (gulputil.env.environment || 'production');
 gulputil.log('environment: ' + environment);
-
+process.env.NODE_ENV = environment;
 
 // deletes dest/ and depl/
 gulp.task('clean', function () {
@@ -95,7 +95,7 @@ gulp.task('node-config', function () {
 
 gulp.task("mainbowerfiles", function () {
     return gulp.src(mainbowerfiles())
-            .pipe(gulpdebug())
+            .pipe(gulpdebug({title: 'bower-main-files'}))
             .pipe(gulp.dest(paths.dst + '/externals/'));
 });
 

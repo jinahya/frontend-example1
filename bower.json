@@ -18,6 +18,12 @@
   ],
   "devDependencies": {},
   "dependencies": {
-    "jquery": "^2.2.1"
+    "jquery": "^2.2.1",
+    "node-config": "git@github.com:lorenwest/node-config.git#^0.4.19"
+  },
+  "overrides": {
+    "jquery": {
+      "main": "./dist/jquery.min.js"
+    }
   }
 }
