@@ -1,4 +1,4 @@
-# webapp-example1
+# frontend-example1
 
 A sample project using [node](https://www.npmjs.com/), [gulp](http://gulpjs.com/), and [bower](http://bower.io/).
 
