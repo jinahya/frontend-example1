@@ -24,7 +24,7 @@ var src_exclude = ['!src/bower_components{,/**}'];
 var paths = {
     //src: 'src',
     src_markups: ['src/**/*.html'].concat(src_exclude),
-    src_images: ['src/images/**/*'].concat(src_exclude),
+    src_images: ['images/**/*.png', 'images/**/*.jpg', 'images/**/*.svg'].concat(src_exclude),
     src_javascripts: ['src/scripts/**/*.js'].concat(src_exclude),
     src_coffeescripts: ['src/scripts/**/*.coffee'].concat(src_exclude),
     src_typescripts: ['src/scripts/**/*.ts'].concat(src_exclude),
@@ -79,6 +79,7 @@ gulp.task('markups', function () {
 // processes image files
 gulp.task('images', function () {
     return gulp.src(paths.src_images)
+            .pipe(gulpdebug({title: 'images'}))
             .pipe(gulpimagemin({
                 progressive: true,
                 svgoPlugins: [{removeViewBox: false}],
@@ -97,7 +98,7 @@ gulp.task('styles', function () {
                 console.log(details.name + ': ' + details.stats.originalSize);
                 console.log(details.name + ': ' + details.stats.minifiedSize);
             }))
-            .pipe(gulpdebug())
+            .pipe(gulpdebug({title: 'styles'}))
             .pipe(gulp.dest(paths.dst_styles));
 });
 
