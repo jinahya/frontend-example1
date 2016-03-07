@@ -61,12 +61,9 @@ gulp.task("mainbowerfiles", function () {
 // processes javascripts, coffeescripts, and typescripts
 gulp.task('scripts', ['mainbowerfiles'], function () {
     return mergestream(
-            (gulp.src(paths.src_javascripts) // javascripts
-                    .pipe(gulpjshint())),
-            (gulp.src(paths.src_coffeescripts) // coffeescripts
-                    .pipe(gulpcoffee({bare: true}).on('error', gulputil.log))),
-            (gulp.src(paths.src_typescripts) // typescripts
-                    .pipe(gulptypescript())))
+            (gulp.src(paths.src_javascripts).pipe(gulpjshint())),
+            (gulp.src(paths.src_coffeescripts).pipe(gulpcoffee({bare: true}).on('error', gulputil.log))),
+            (gulp.src(paths.src_typescripts).pipe(gulptypescript())))
             .pipe(gulpuglify())
             .pipe(gulp.dest(paths.dst_scripts));
 });
@@ -82,7 +79,6 @@ gulp.task('markups', function () {
 gulp.task('images', function () {
     return gulp.src(paths.src_images)
             .pipe(gulpdebug({title: 'images'}))
-//            .pipe(gulpimagemin())
             .pipe(gulpimagemin({
                 progressive: true,
                 svgoPlugins: [{removeViewBox: false}],
@@ -105,18 +101,18 @@ gulp.task('styles', function () {
             .pipe(gulp.dest(paths.dst_styles));
 });
 
-// copies ./src/config/<environment>.json to ./dst/config/config.json
+// copies ./src/config/default-<environment>.json to ./dst/config/config.json
 gulp.task('config', function () {
-    return gulp.src([paths.src + 'src/config/default-' + environment + '.json'])
+    return gulp.src([paths.src + '/config/default-' + environment + '.json'])
             .pipe(gulpdebug({title: 'config'}))
             .pipe(gulprename('default.json'))
             .pipe(gulp.dest(paths.dst + "/config"));
 });
 
 gulp.task("mainbowerfiles", function () {
-    return gulp.src(mainbowerfiles())
+    return gulp.src(mainbowerfiles(), {base: 'src/bower_components'})
             .pipe(gulpdebug({title: 'bower-main-files'}))
-            .pipe(gulp.dest(paths.dst + '/dependencies/'));
+            .pipe(gulp.dest(paths.dst + '/bower_components/'));
 });
 
 // archives
