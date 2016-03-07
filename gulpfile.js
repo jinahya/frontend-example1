@@ -1,11 +1,9 @@
 'use-scrict';
 
-var browserify = require('browserify');
 var del = require('del');
 var imageminpngquant = require('imagemin-pngquant');
 var mainbowerfiles = require('main-bower-files');
 var mergestream = require('merge-stream');
-var reactify = require('reactify');
 
 var gulp = require('gulp');
 var gulpcleancss = require('gulp-clean-css');
@@ -25,7 +23,7 @@ var gulpzip = require('gulp-zip');
 var src_exclude = ['!src/bower_components{,/**}'];
 
 var paths = {
-    //src: 'src',
+    src: 'src',
     src_markups: ['src/**/*.html'].concat(src_exclude),
     src_images: ['src/images/**/*.png', 'src/images/**/*.jpg', 'src/images/**/*.svg'].concat(src_exclude),
     src_javascripts: ['src/scripts/**/*.js'].concat(src_exclude),
@@ -84,6 +82,7 @@ gulp.task('markups', function () {
 gulp.task('images', function () {
     return gulp.src(paths.src_images)
             .pipe(gulpdebug({title: 'images'}))
+//            .pipe(gulpimagemin())
             .pipe(gulpimagemin({
                 progressive: true,
                 svgoPlugins: [{removeViewBox: false}],
@@ -108,7 +107,7 @@ gulp.task('styles', function () {
 
 // copies ./src/config/<environment>.json to ./dst/config/config.json
 gulp.task('config', function () {
-    return gulp.src([paths.src + '/config/default-' + environment + '.json'])
+    return gulp.src([paths.src + 'src/config/default-' + environment + '.json'])
             .pipe(gulpdebug({title: 'config'}))
             .pipe(gulprename('default.json'))
             .pipe(gulp.dest(paths.dst + "/config"));
@@ -139,20 +138,3 @@ gulp.task('build-development', ['default'], function () {
     var config = require('config');
 });
 
-
-gulp.task('browserify', function () {
-    // set up the browserify instance on a task basis
-    var b = browserify({
-        entries: 'src/index.js',
-        debug: true,
-        // defining transforms here will avoid crashing your stream
-        transform: [reactify]
-    });
-
-    return b.bundle()
-            .pipe(source('src/index.js'))
-            .pipe(buffer())
-            .on('error', gutil.log)
-            .pipe(sourcemaps.write('./'))
-            .pipe(gulp.dest('./dist/js/'));
-});
