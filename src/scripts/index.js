@@ -5,7 +5,7 @@ var config;
 $(document).ready(function () {
     console.log("$(document).ready()");
     $.getJSON({
-        url: 'config/default.json',
+        url: 'configs/default.json',
         success: function (data) {
             config = data;
             console.log('baseurl: ' + config.baseurl);
