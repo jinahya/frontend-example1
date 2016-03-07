@@ -27,7 +27,7 @@ var src_exclude = ['!src/bower_components{,/**}'];
 var paths = {
     //src: 'src',
     src_markups: ['src/**/*.html'].concat(src_exclude),
-    src_images: ['images/**/*.png', 'images/**/*.jpg', 'images/**/*.svg'].concat(src_exclude),
+    src_images: ['src/images/**/*.png', 'src/images/**/*.jpg', 'src/images/**/*.svg'].concat(src_exclude),
     src_javascripts: ['src/scripts/**/*.js'].concat(src_exclude),
     src_coffeescripts: ['src/scripts/**/*.coffee'].concat(src_exclude),
     src_typescripts: ['src/scripts/**/*.ts'].concat(src_exclude),
@@ -55,7 +55,7 @@ gulp.task('clean', function () {
 
 // process main bower files
 gulp.task("mainbowerfiles", function () {
-    return gulp.src(mainbowerfiles(), {base: 'bower_components'})
+    return gulp.src(mainbowerfiles(), {base: 'src/bower_components'})
             .pipe(gulpdebug({title: 'mainbowerfiles'}))
             .pipe(gulp.dest(paths.dst + '/bower_components'));
 });
