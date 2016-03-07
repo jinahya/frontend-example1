@@ -45,7 +45,6 @@ var environment = process.env.NODE_ENV
 gulputil.log('environment: ' + environment);
 process.env.NODE_ENV = environment;
 
-
 // deletes dest/ and depl/
 gulp.task('clean', function () {
   return del.sync([paths.dst + '/**', paths.dpl + '/**']);
@@ -108,6 +107,7 @@ gulp.task('config-default', function () {
           .pipe(gulp.dest(paths.dst + "/configs"));
 });
 
+// copies bower main files
 gulp.task("mainbowerfiles", function () {
   return gulp.src(mainbowerfiles(), {base: paths.src + '/bower_components'})
           .pipe(gulpdebug({title: 'bower-main-files'}))
@@ -125,11 +125,5 @@ gulp.task('default', ['archive'], function () {
 });
 
 gulp.task('build', ['default'], function () {
-
-});
-
-gulp.task('build-development', ['default'], function () {
-  process.env.NODE_ENV = "stage";
-  var config = require('config');
 });
 
