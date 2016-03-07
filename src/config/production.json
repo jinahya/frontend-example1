@@ -1,8 +1,0 @@
-{
-    "server1": {
-        "scheme": "https://",
-        "host": "www.host_production.com",
-        "port": 80,
-        "path": "/path_default"
-    }
-}

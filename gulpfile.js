@@ -1,9 +1,11 @@
 'use-scrict';
 
+var browserify = require('browserify');
 var del = require('del');
 var imageminpngquant = require('imagemin-pngquant');
 var mainbowerfiles = require('main-bower-files');
 var mergestream = require('merge-stream');
+var reactify = require('reactify');
 
 var gulp = require('gulp');
 var gulpcleancss = require('gulp-clean-css');
@@ -13,6 +15,7 @@ var gulpdebug = require('gulp-debug');
 var gulphtmlmin = require('gulp-htmlmin');
 var gulpimagemin = require('gulp-imagemin');
 var gulpjshint = require('gulp-jshint');
+var gulprename = require('gulp-rename');
 var gulpsass = require('gulp-sass');
 var gulptypescript = require('gulp-typescript');
 var gulpuglify = require('gulp-uglify');
@@ -30,6 +33,7 @@ var paths = {
     dpl: 'dpl'
 };
 
+gulputil.log("NODE_ENV: " + process.env.NODE_ENV);
 var environment = process.env.NODE_ENV
         || (gulputil.env.environment || 'production');
 gulputil.log('environment: ' + environment);
@@ -87,20 +91,21 @@ gulp.task('styles', function () {
 });
 
 // copies ./src/config/<environment>.json to ./dst/config/config.json
-gulp.task('node-config', function () {
-    return gulp.src([paths.src + '/config/' + environment + '.json'])
-            .pipe(gulpdebug({title: 'node-config'}))
-            .pipe(gulp.dest(paths.dst + "/config/config.json"));
+gulp.task('config', function () {
+    return gulp.src([paths.src + '/config/default-' + environment + '.json'])
+            .pipe(gulpdebug({title: 'config'}))
+            .pipe(gulprename('default.json'))
+            .pipe(gulp.dest(paths.dst + "/config"));
 });
 
 gulp.task("mainbowerfiles", function () {
     return gulp.src(mainbowerfiles())
             .pipe(gulpdebug({title: 'bower-main-files'}))
-            .pipe(gulp.dest(paths.dst + '/externals/'));
+            .pipe(gulp.dest(paths.dst + '/dependencies/'));
 });
 
 // archives
-gulp.task('archive', ['markups', 'images', 'scripts', 'styles', 'mainbowerfiles', 'node-config'], function () {
+gulp.task('archive', ['markups', 'images', 'scripts', 'styles', 'mainbowerfiles', 'config'], function () {
     return gulp.src('**/*', {cwd: paths.dst, cwdbase: true})
             .pipe(gulpzip('archive.zip'))
             .pipe(gulp.dest(paths.dpl));
@@ -116,4 +121,22 @@ gulp.task('build', ['default'], function () {
 gulp.task('build-development', ['default'], function () {
     process.env.NODE_ENV = "stage";
     var config = require('config');
+});
+
+
+gulp.task('browserify', function () {
+    // set up the browserify instance on a task basis
+    var b = browserify({
+        entries: 'src/index.js',
+        debug: true,
+        // defining transforms here will avoid crashing your stream
+        transform: [reactify]
+    });
+
+    return b.bundle()
+            .pipe(source('src/index.js'))
+            .pipe(buffer())
+            .on('error', gutil.log)
+            .pipe(sourcemaps.write('./'))
+            .pipe(gulp.dest('./dist/js/'));
 });

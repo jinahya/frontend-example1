@@ -1,5 +1,10 @@
+
 $(document).ready(function () {
     console.log("$(document).ready()");
+    var config = JSON.parse(config);
+//    $.getJSON("../config/config.json", function (config) {
+//        console.log(config);
+//    });
 });
 
 $(window).on("load", function () {
@@ -9,5 +14,4 @@ $(window).on("load", function () {
 window.onload = function () {
     console.log("window.onload");
 };
-
 
