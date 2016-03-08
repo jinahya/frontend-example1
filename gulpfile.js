@@ -1,6 +1,7 @@
 'use-scrict';
 
 var del = require('del');
+//var fs = require('fs');
 var imageminpngquant = require('imagemin-pngquant');
 var mainbowerfiles = require('main-bower-files');
 var mergestream = require('merge-stream');
