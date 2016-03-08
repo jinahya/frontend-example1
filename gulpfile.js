@@ -39,6 +39,7 @@ var paths = {
   dst_configs: "dst/configs",
   dst_images: 'dst/images',
   dst_scripts: 'dst/scripts',
+  dst_scripts_es2015: 'dst/scripts.es2015',
   dst_styles: 'dst/styles',
   dpl: 'dpl'
 };
@@ -73,10 +74,16 @@ gulp.task("mainbowerfiles", function () {
 });
 
 // processes javascripts, coffeescripts, and typescripts
-gulp.task('scripts', function () {
+gulp.task('scripts.es2015', function () {
+  return  gulp.src(paths.src_javascripts_es2015).pipe(gulpbabel({presets: ['es2015']})).pipe(gulpjshint())
+          //.pipe(gulpuglify())
+          .pipe(gulp.dest(paths.dst_scripts_es2015));
+});
+
+// processes javascripts, coffeescripts, and typescripts
+gulp.task('scripts', ['scripts.es2015'], function () {
   return mergestream(
           (gulp.src(paths.src_javascripts).pipe(gulpjshint())),
-          (gulp.src(paths.src_javascripts_es2015).pipe(gulpbabel({presets: ['es2015']})).pipe(gulpjshint())),
           (gulp.src(paths.src_coffeescripts).pipe(gulpcoffee({bare: true}).on('error', gulputil.log))),
           (gulp.src(paths.src_typescripts).pipe(gulptypescript())))
           .pipe(gulpuglify())
