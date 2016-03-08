@@ -7,6 +7,7 @@ A sample project using [node](https://www.npmjs.com/), [gulp](http://gulpjs.com/
 Install, if `npm` command is not available, [Node.js](https://nodejs.org/en/).
 ```
 $ brew install node
+$ which npm
 ```
 ### Gulp.js
 Install, if `gulp` command is not available, [Gulp](http://gulpjs.com/).
