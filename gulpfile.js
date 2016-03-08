@@ -33,6 +33,7 @@ var paths = {
   src_sass: ['src/styles/**/*.scss'].concat(src_exclude),
   dst: 'dst',
   dst_markups: 'dst',
+  dst_configs: "dst/configs",
   dst_images: 'dst/images',
   dst_scripts: 'dst/scripts',
   dst_styles: 'dst/styles',
@@ -40,12 +41,11 @@ var paths = {
 };
 
 gulputil.log("NODE_ENV: " + process.env.NODE_ENV);
-var environment = process.env.NODE_ENV
-        || (gulputil.env.environment || 'production');
+var environment = process.env.NODE_ENV || (gulputil.env.environment || 'production');
 gulputil.log('environment: ' + environment);
 process.env.NODE_ENV = environment;
 
-// deletes dest/ and depl/
+// deletes dst/ and dpl/
 gulp.task('clean', function () {
   return del.sync([paths.dst + '/**', paths.dpl + '/**']);
 });
@@ -62,7 +62,7 @@ gulp.task('images', function () {
           .pipe(gulp.dest(paths.dst_images));
 });
 
-// process main bower files
+// copies bower main files while preseving directory structures
 gulp.task("mainbowerfiles", function () {
   return gulp.src(mainbowerfiles(), {base: paths.src + '/bower_components'})
           .pipe(gulpdebug({title: 'mainbowerfiles'}))
@@ -99,19 +99,12 @@ gulp.task('markups', function () {
           .pipe(gulp.dest(paths.dst_markups));
 });
 
-// copies ./src/config/default-<environment>.json to ./dst/config/config.json
+// copies ./src/configs/default-<environment>.json to ./dst/configs/default.json
 gulp.task('config-default', function () {
   return gulp.src([paths.src + '/configs/default-' + environment + '.json'])
           .pipe(gulpdebug({title: 'config-default'}))
           .pipe(gulprename('default.json'))
-          .pipe(gulp.dest(paths.dst + "/configs"));
-});
-
-// copies bower main files
-gulp.task("mainbowerfiles", function () {
-  return gulp.src(mainbowerfiles(), {base: paths.src + '/bower_components'})
-          .pipe(gulpdebug({title: 'bower-main-files'}))
-          .pipe(gulp.dest(paths.dst + '/bower_components/'));
+          .pipe(gulp.dest(paths.dst_configs));
 });
 
 // archives
@@ -124,6 +117,7 @@ gulp.task('archive', ['markups', 'images', 'scripts', 'styles', 'mainbowerfiles'
 gulp.task('default', ['archive'], function () {
 });
 
+// just for NetBeans' default behavior
 gulp.task('build', ['default'], function () {
 });
 
