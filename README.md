@@ -28,6 +28,7 @@ $ npm install
 $ ls node_modules
 ```
 ### bower_components
+Install dependent bower components.
 ```
 $ bower install
 $ ls src/bower_components
