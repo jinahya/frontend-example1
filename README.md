@@ -2,99 +2,39 @@
 
 A sample project using [node](https://www.npmjs.com/), [gulp](http://gulpjs.com/), and [bower](http://bower.io/).
 
-## directory structure
+## Prepare
+### Node.js
+Install, if `npm` command is not available, [Node.js](https://nodejs.org/en/).
 ```
-.
-|-- bower.json
-|-- gulpfile.js
-|-- package.json
-`-- src/
-    |-- fonts/
-    |-- images/
-    |-- scripts/
-    `-- styles/
+$ brew install node
 ```
-
-## build
+### Gulp.js
+Install, if `gulp` command is not available, [Gulp](http://gulpjs.com/).
+```
+$ sudo npm -g install gulp-cli
+$ which gulp
+```
+### Bower
+Install, if `bower` command is not available, [Bower](http://bower.io/).
+```
+$ sudo npm -g install bower
+$ which bower
+```
+### node_modules
+Install required node modules.
+```
+$ npm install
+$ ls node_modules
+```
+### bower_components
 ```
 $ bower install
-$ npm install
-$ gulp
+$ ls src/bower_components
 ```
-## gulp
-### clean
-* [`gulp-clean`](https://www.npmjs.com/package/gulp-clean) deprepated by `gulp-rmiraf`.
-* [`gulp-rmiraf`](https://www.npmjs.com/package/gulp-rimraf) deprecated in favor of [`delete-files-folder`](https://github.com/gulpjs/gulp/blob/master/docs/recipes/delete-files-folder.md).
 
-This project creates two directories while building. One is `dst/` for processed output and the other is `dpl/` for deployable archives.
-```javascript
-// deletes dst/ and dpl/
-gulp.task('clean', function () {
-    return del.sync([paths.dst + '/**', paths.dpl + '/**']);
-});
+## Build
 ```
-### markups
-```
-// processes markup files
-gulp.task('markups', function () {
-    return gulp.src(paths.markups)
-            .pipe(gulphtmlmin({collapseWhitespace: true}))
-            .pipe(gulp.dest(paths.dst));
-});
-```
-### images
-```javascript
-// processes image files
-gulp.task('images', function () {
-    return gulp.src(paths.images)
-            .pipe(gulpimagemin({
-                progressive: true,
-                svgoPlugins: [{removeViewBox: false}],
-                use: [imageminpngquant()]
-            }))
-            .pipe(gulp.dest(paths.dst + '/images'));
-});
-```
-### scripts
-The `scripts` task processes three types of scripts(javascripts, coffeescripts, and typescripts).
-```javascript
-// processes javascripts, coffeescripts, and typescripts
-// produces dst/scripts/script.js
-gulp.task('scripts', function () {
-    return mergestream(
-            (gulp.src(paths.javascripts) // javascripts
-                    .pipe(gulpjshint())),
-            (gulp.src(paths.coffeescripts) // coffeescripts
-                    .pipe(gulpcoffee({bare: true}).on('error', gulputil.log))),
-            (gulp.src(paths.typescripts) // typescripts
-                    .pipe(gulptypescript())))
-            .pipe(gulpuglify())
-            //.pipe(gulpconcat('script.js'))
-            .pipe(gulp.dest(paths.dst + '/scripts'));
-});
-```
-### styles
-```javascript
-// processes style files
-// processes style files
-gulp.task('styles', function () {
-    return mergestream(
-            (gulp.src('src/styles/**/*.css')), // css
-            (gulp.src('src/styles/**/*.scss') // scss
-                    .pipe(gulpsass().on('error', gulpsass.logError))))
-            .pipe(gulpcleancss({debug: true}, function (details) {
-                console.log(details.name + ': ' + details.stats.originalSize);
-                console.log(details.name + ': ' + details.stats.minifiedSize);
-            }))
-            .pipe(gulp.dest(paths.dst + '/styles'));
-});
-```
-### archives
-```javascript
-// archives
-gulp.task('archive', ['markups', 'images', 'scripts', 'styles'], function () {
-    return gulp.src('**/*', {cwd: paths.dst, cwdbase: true})
-            .pipe(gulpzip('archive.zip'))
-            .pipe(gulp.dest(paths.dpl));
-});
+$ gulp
+$ ls dst
+$ ls dpl
 ```
