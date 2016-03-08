@@ -7,6 +7,7 @@ var mainbowerfiles = require('main-bower-files');
 var mergestream = require('merge-stream');
 
 var gulp = require('gulp');
+var gulpbabel = require('gulp-babel');
 var gulpcleancss = require('gulp-clean-css');
 var gulpcoffee = require('gulp-coffee');
 var gulpconcat = require('gulp-concat');
@@ -28,6 +29,7 @@ var paths = {
   src_markups: ['src/**/*.html'].concat(src_exclude),
   src_images: ['src/images/**/*.png', 'src/images/**/*.jpg', 'src/images/**/*.svg'].concat(src_exclude),
   src_javascripts: ['src/scripts/**/*.js'].concat(src_exclude),
+  src_javascripts_es2015: ['src/scripts.es2015/**/*.js'].concat(src_exclude),
   src_coffeescripts: ['src/scripts/**/*.coffee'].concat(src_exclude),
   src_typescripts: ['src/scripts/**/*.ts'].concat(src_exclude),
   src_css: ['src/styles/**/*.css'].concat(src_exclude),
@@ -74,6 +76,7 @@ gulp.task("mainbowerfiles", function () {
 gulp.task('scripts', function () {
   return mergestream(
           (gulp.src(paths.src_javascripts).pipe(gulpjshint())),
+          (gulp.src(paths.src_javascripts_es2015).pipe(gulpbabel({presets: ['es2015']})).pipe(gulpjshint())),
           (gulp.src(paths.src_coffeescripts).pipe(gulpcoffee({bare: true}).on('error', gulputil.log))),
           (gulp.src(paths.src_typescripts).pipe(gulptypescript())))
           .pipe(gulpuglify())
