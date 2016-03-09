@@ -7,7 +7,14 @@ A sample project using [node](https://www.npmjs.com/), [gulp](http://gulpjs.com/
 ## Prepare
 You can install all required modules and components using `.install.sh` if you already installed the [Node.js](https://nodejs.org/en/).
 ```
+$ which npm
+/usr/local/bin/npm
 $ sh ./.install.sh
+installing node modules using /usr/local/bin/npm (3.8.1) ...
+installing bower components using /usr/local/bin/bower (1.7.7) ...
+finished.
+now you can build with gulp command.
+$ 
 ```
 ### Node.js
 Install, if `npm` command is not available, [Node.js](https://nodejs.org/en/).
