@@ -5,7 +5,7 @@
 A sample project using [node](https://www.npmjs.com/), [gulp](http://gulpjs.com/), and [bower](http://bower.io/).
 
 ## Prepare
-You can install all required modules and components using `.install.sh`.
+You can install all required modules and components using `.install.sh` if you already installed the [Node.js](https://nodejs.org/en/).
 ```
 $ sh ./.install.sh
 ```
