@@ -1,7 +1,7 @@
 language: node_js
 
 before_script:
-  - npm install -g gulp gulp-cli
+#  - npm install -g gulp gulp-cli
   - bower install
 
 script: gulp
