@@ -1,5 +1,7 @@
 # frontend-example1
 
+[![Build Status](https://travis-ci.org/jinahya/frontend-example1.svg?branch=master)](https://travis-ci.org/jinahya/frontend-example1)
+
 A sample project using [node](https://www.npmjs.com/), [gulp](http://gulpjs.com/), and [bower](http://bower.io/).
 
 ## Prepare
