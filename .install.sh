@@ -12,8 +12,8 @@ $npmpath install &>/dev/null
 bowerpath=$(which bower)
 if [[ -z "$bowerpath" ]]; then
     echo bower: command not found
-    echo installing bower...
-    sudo npm install -g bower
+    echo installing bower ...
+    sudo npm install -g bower &>/dev/null
 fi
 bowerversion=$(bower --version)
 echo installing bower components using $bowerpath \($bowerversion\) ...
@@ -22,7 +22,7 @@ bower install &>/dev/null
 gulppath=$(which gulp)
 if [[ -z "$gulppath" ]]; then
     echo gulp: command not found
-    echo installing gulp-cli
+    echo installing gulp-cli ...
     sudo npm install -g gulp-cli &>/dev/null
 fi
 # ------------------------------------------------------------------------- done
