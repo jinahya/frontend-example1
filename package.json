@@ -44,8 +44,7 @@
     "merge-stream": "^1.0.0",
     "reactify": "^1.1.1",
     "reactivity": "^2.4.1",
-    "uglify-js": "^2.6.2",
-    "vinyl-source-stream": "^1.1.0"
+    "uglify-js": "^2.6.2"
   },
   "dependencies": {}
 }
